@@ -1700,6 +1700,12 @@ function AgentPeek({
         detail={summaryOf(agent, type)}
         onClose={onClose}
       />
+      {import.meta.env.DEV && isMockAgent(agent.pubkey) && (
+        // Dev servers only: sample agents can't be messaged through a relay.
+        <div>
+          <MockAgentMessageButton agent={agent} />
+        </div>
+      )}
       {agent.place === "elsewhere" ? (
         <p className="m-0 text-body-sm text-secondary">
           {type && !type.remote ? (
