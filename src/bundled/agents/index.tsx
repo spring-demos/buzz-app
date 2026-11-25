@@ -12,6 +12,7 @@ import {
 import { availableAgentProviderRoute } from "./routes";
 import { developerMode } from "../../features/developer/mode";
 import { withImportScenario } from "../../features/developer/agent-import-scenario";
+import { withMockAgents } from "../../features/developer/mock-agents";
 import { isTauri } from "@tauri-apps/api/core";
 import type {} from "../../features/agents/external-connection";
 import { ExternalConnectionSettings } from "./ExternalConnectionSettings";
@@ -38,7 +39,11 @@ export const apply: PluginModule["apply"] = (ctx) => {
   registerDecideTool(ctx.agents, ctx.decisions);
   ctx.effect(() => forgetMemoryListingsOnSelection(ctx.communityReader));
   const { relay, navigation: navigator } = ctx;
-  const agents = developerMode ? withImportScenario(ctx.agents) : ctx.agents;
+  const scenario = developerMode
+    ? withImportScenario(ctx.agents)
+    : ctx.agents;
+  // Dev servers only: sample agents where no agent runtime exists.
+  const agents = import.meta.env.DEV ? withMockAgents(scenario) : scenario;
   if (isTauri()) {
     // Gateway readiness probes go out under this plugin's native grant for
     // the build's gateway origin, which exists only when routing is on.
