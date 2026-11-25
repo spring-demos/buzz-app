@@ -639,7 +639,8 @@ export function useAppNavigation(
         dismiss(previous.target);
         return;
       }
-      if (!selectedClient.viewer) return;
+      // Without an identity (`here` is null) Settings must still close,
+      // otherwise a dialog opened directly by link is a dead end.
       dismiss({
         version: 1,
         kind: "page",
