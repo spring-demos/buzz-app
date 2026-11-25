@@ -25,6 +25,8 @@ import type {
 } from "../../features/communities/service";
 import { PanelWorkspace } from "../../features/panels/PanelWorkspace";
 import { AgentMessageButton } from "./AgentMessageButton";
+import { isMockAgent } from "../../features/developer/mock-agents";
+import { MockAgentMessageButton } from "../../features/developer/MockAgentMessageButton";
 import { ProviderDialog } from "./ProviderDialog";
 // Agents, teams, and marketplace, with creation and import from their menus.
 import {
@@ -754,15 +756,20 @@ export function AgentsPage({
           agentRoute,
         )}
         communities={communities}
-        messageAction={(variant) => (
-          <AgentMessageButton
-            variant={variant}
-            pubkey={selected.pubkey}
-            relay={relay}
-            navigator={navigator}
-            navigation={navigation}
-          />
-        )}
+        messageAction={(variant) =>
+          // Dev servers only: a sample agent has no relay to message through.
+          import.meta.env.DEV && isMockAgent(selected.pubkey) ? (
+            <MockAgentMessageButton agent={selected} variant={variant} />
+          ) : (
+            <AgentMessageButton
+              variant={variant}
+              pubkey={selected.pubkey}
+              relay={relay}
+              navigator={navigator}
+              navigation={navigation}
+            />
+          )
+        }
         key={selected.pubkey}
         agents={agents}
         agent={selected}

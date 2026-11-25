@@ -75,6 +75,10 @@ const mockAgents: readonly Agent[] = Object.freeze(
   ),
 );
 
+/** Whether `pubkey` belongs to one of the sample agents above. */
+export const isMockAgent = (pubkey: string) =>
+  mockAgents.some((agent) => agent.pubkey === pubkey);
+
 /** `agents`, with sample agents while its runtime is unavailable. */
 export function withMockAgents(agents: Agents): Agents {
   let real: AgentsSnapshot | undefined;
