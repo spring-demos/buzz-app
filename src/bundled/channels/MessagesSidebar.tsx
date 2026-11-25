@@ -32,6 +32,10 @@ import type {
   SidebarScope,
 } from "../../features/channel-navigation/sidebar-scope-service";
 import styles from "./MessagesSidebar.module.css";
+import {
+  MockConversationList,
+  mockConversationsAvailable,
+} from "../../features/developer/MockConversations";
 
 import { useRelayConnection } from "../../features/relay/react";
 import { targetKey } from "../../features/navigation/targets";
@@ -331,7 +335,11 @@ function ScopedSidebar({
           <SidebarList>
             {/* A connection retrying by itself is still connecting; only a
                   settled failure asks for Try again, right beside its notice. */}
-            {refused ? (
+            {mockConversationsAvailable &&
+            connection.status === "disconnected" ? (
+              // Dev servers only: sample chats where no community is connected.
+              <MockConversationList />
+            ) : refused ? (
               <CommunityRefusalNotice
                 // A refusal while connecting is the relay's about access.
                 refusal={connection.refusal ?? "access"}

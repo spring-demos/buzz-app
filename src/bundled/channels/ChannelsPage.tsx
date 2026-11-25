@@ -144,6 +144,10 @@ import { usePanelSplit } from "../../features/panels/usePanelSplit";
 import { PanelDock } from "../../features/panels/PanelDock";
 import { COMPANION_SPLIT, PanelFrame } from "../../features/panels/PanelFrame";
 import { diagnosticsAvailable } from "../../features/developer/mode";
+import {
+  MockConversationView,
+  mockConversationsAvailable,
+} from "../../features/developer/MockConversations";
 import { OutboxStatus } from "./OutboxStatus";
 import { RelayTimings } from "./RelayTimings";
 import { LiveStatus } from "./LiveStatus";
@@ -279,7 +283,10 @@ export function ChannelsPage({
     <section className={styles.root} aria-label="Channels">
       {session.status !== "ready" && !session.cached ? (
         <PanelFrame scope={session.scope} companion={companion}>
-          {session.status === "disconnected" ? (
+          {session.status === "disconnected" && mockConversationsAvailable ? (
+            // Dev servers only: a sample chat where no community is connected.
+            <MockConversationView />
+          ) : session.status === "disconnected" ? (
             <div className={styles.connect}>
               <div className={styles.connectIcon}>
                 <PlugIcon size={30} />

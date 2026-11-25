@@ -32,7 +32,7 @@ const greeting = (agent: Agent) =>
   GREETINGS[agent.name] ?? `${agent.name} here. How can I help?`;
 
 /** The agent's answer to the `count`th thing you said. */
-const reply = (agent: Agent, said: string, count: number) =>
+export const reply = (agent: Agent, said: string, count: number) =>
   count === 0
     ? `${greeting(agent)} You said: “${said}”. ${FOLLOW_UPS[0]}`
     : (FOLLOW_UPS[count % FOLLOW_UPS.length] ?? FOLLOW_UPS[0] ?? "");

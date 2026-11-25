@@ -60,7 +60,9 @@ const mockAgents: readonly Agent[] = Object.freeze(
       key: fakeKey(index + 1),
       pubkey: fakeKey(index + 1),
       name: sample.name,
-      ...(picture(sample.avatar) && { picture: picture(sample.avatar) }),
+      ...(picture(sample.avatar) !== undefined && {
+        picture: picture(sample.avatar) as string,
+      }),
       type: TYPE_KEY,
       owner: "",
       relay: "",
@@ -74,6 +76,9 @@ const mockAgents: readonly Agent[] = Object.freeze(
     }),
   ),
 );
+
+/** The sample agents, for screens that show them outside the Agents page. */
+export const sampleAgents = mockAgents;
 
 /** Whether `pubkey` belongs to one of the sample agents above. */
 export const isMockAgent = (pubkey: string) =>
